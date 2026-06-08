@@ -1,0 +1,16 @@
+transaction_id,date,description,amount,currency,status
+TXN001,2026-04-01,Wire Transfer - Vendor A,15000.00,CAD,Completed
+TXN002,2026-04-02,Payroll Processing,42500.00,CAD,Completed
+TXN003,2026-04-03,Office Supplies - Staples,320.75,CAD,Completed
+TXN004,2026-04-04,Software License - Adobe,1200.00,CAD,Completed
+TXN005,2026-04-05,Wire Transfer - Vendor B,8750.00,CAD,Completed
+TXN006,2026-04-07,Consulting Fees - Acme Corp,22000.00,CAD,Completed
+TXN007,2026-04-08,Travel Expenses - Q1 Report,4500.00,CAD,Completed
+TXN008,2026-04-09,Equipment Purchase - Dell,9800.00,CAD,Completed
+TXN009,2026-04-10,Marketing Campaign,31000.00,CAD,Completed
+TXN010,2026-04-11,Utility Bill - Hydro,1875.50,CAD,Completed
+TXN011,2026-04-14,Wire Transfer - Vendor C,55000.00,CAD,Completed
+TXN012,2026-04-15,Insurance Premium,12400.00,CAD,Completed
+TXN013,2026-04-16,Cloud Services - Azure,6750.00,CAD,Completed
+TXN014,2026-04-17,Legal Fees,18500.00,CAD,Completed
+TXN015,2026-04-22,Rent - Office Space,28000.00,CAD,Completed
