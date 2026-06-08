@@ -1,56 +1,62 @@
+# ============================================================
+# create_database.py
+# Loads a TD financial report PDF, splits it into chunks,
+# and stores them in a ChromaDB vector database using
+# Azure OpenAI embeddings
+# ============================================================
+
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
 from langchain_openai import AzureOpenAIEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from dotenv import load_dotenv
 import os
 import shutil
-from openai import AzureOpenAI
 
-# Loading environment variables
+# Load environment variables from .env file
 load_dotenv()
-client = AzureOpenAI(
-    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
-    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-    api_version=os.getenv("AZURE_OPENAI_API_VERSION")
-)
 
-# setting the environment
+# TD financial report PDF
+DATA_PATH = r"data/TD-2026-q2-earnings-report.pdf"
 
-DATA_PATH = r"data/TD-2026-q2-earnings-report.pdf" 
-CHROMA_PATH = r"chroma_db" # path to ChromaDB vector store
+# Path to the ChromaDB vector store
+CHROMA_PATH = r"chroma_db"
+
 
 def main():
     generate_data_store()
 
-# Full pipeline: load -> split -> store.
+# full pipeline: load -> split -> store.
 def generate_data_store():
+    
     documents = load_documents()
     chunks = split_text(documents)
     save_to_chroma(chunks)
 
+
 def load_documents():
-    # Load PDF files
     loader = PyPDFLoader(DATA_PATH)
     documents = loader.load()
     return documents
 
-# Split docs into chunks for embedding.
+# Splits PDF pages into smaller chunks for embedding.
 def split_text(documents: list[Document]):
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=300, # max characters per chunk
-        chunk_overlap=100,
+        chunk_size=1000,
+        chunk_overlap=200,
         length_function=len,
         add_start_index=True,
     )
     chunks = text_splitter.split_documents(documents)
     print(f"Split {len(documents)} documents into {len(chunks)} chunks.")
-    document = chunks[10]
-    print(document.page_content)
-    print(document.metadata)
+
+    # Preview a sample chunk for debugging
+    print(chunks[10].page_content)
+    print(chunks[10].metadata)
     return chunks
 
+#  Embeds document chunks using Azure OpenAI and saves them to ChromaDB vector store.
 def save_to_chroma(chunks: list[Document]):
     # Clear existing ChromaDB to avoid duplicate entries
     if os.path.exists(CHROMA_PATH):
@@ -68,8 +74,9 @@ def save_to_chroma(chunks: list[Document]):
     db = Chroma.from_documents(
         chunks, embeddings, persist_directory=CHROMA_PATH
     )
-    db.persist()
+   
     print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")
+
 
 if __name__ == "__main__":
     main()
