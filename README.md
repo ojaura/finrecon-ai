@@ -8,8 +8,8 @@ A multi-source financial intelligence assistant powered by Retrieval-Augmented G
 
 FinRecon AI combines two capabilities in a single RAG pipeline:
 
-1. **Financial Report Q&A** — Ask natural language questions about a financial earnings report and receive grounded, context-aware answers backed by the source document
-2. **Transaction Discrepancy Detection** — Automatically cross-references a bank ledger against internal records to identify amount mismatches, status conflicts, and missing transactions
+1. **Financial Report Q&A** — Ask natural language questions about a publicly available financial earnings report and receive grounded, context-aware answers backed by the source document
+2. **Transaction Discrepancy Detection** — Automatically cross-references a bank ledger against internal records(synthetic data) to identify amount mismatches, status conflicts, and missing transactions
 
 ### Example Queries
 
@@ -96,9 +96,9 @@ Sources: ['discrepancy', 'discrepancy', 'discrepancy']
 ```
 finrecon-ai/
 ├── data/
-│   ├── TD-2026-q2-earnings-report.pdf   # TD Q2 2026 Earnings News Release
-│   ├── bank_ledger.csv                  # Bank-side transaction records
-│   └── internal_records.csv            # Internal system transaction records
+│   ├── TD-2026-q2-earnings-report.pdf   # Publicly available TD Q2 2026 Earnings News Release
+│   ├── bank_ledger.csv                  # Bank-side transaction records (synthetic data)
+│   └── internal_records.csv            # Internal system transaction records (synthetic data)
 ├── chroma_db/                           # Persistent ChromaDB vector store
 ├── create_database.py                   # PDF ingestion and vector store creation
 ├── load_csv.py                          # CSV ingestion and discrepancy detection
@@ -171,6 +171,7 @@ python query_data.py "your question here"
 
 ## Notes
 
+- Transaction data used in this project (bank_ledger.csv and internal_records.csv) is entirely synthetic and generated for demonstration purposes only. No real or proprietary financial data was used.
 - All amounts are in Canadian dollars (CAD) unless otherwise noted
 - Built with Azure OpenAI to align with enterprise production standards used in regulated financial environments
 - The PDF used is TD Bank Group's publicly available Q2 2026 Earnings News Release
